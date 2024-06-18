@@ -2,7 +2,7 @@
 
 import { v } from "convex/values"
 
-import { mutation } from "./_generated/server"
+import { mutation, query } from "./_generated/server"
 
 // placeholder images for boards
 const images = [
@@ -185,6 +185,18 @@ export const unfavourite = mutation({
         }
 
         await ctx.db.delete(existingFavourite._id);
+
+        return board;
+    }
+})
+
+export const get = query({
+    args: {
+        id: v.id("boards")
+    },
+    handler: async (ctx, args) => {
+        // get the board
+        const board = ctx.db.get(args.id);
 
         return board;
     }
