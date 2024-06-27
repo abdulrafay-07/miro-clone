@@ -11,7 +11,6 @@ import {
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu"
 
 import { useApiMutation } from "@/hooks/use-api-mutation"
@@ -25,6 +24,7 @@ interface ActionsProps {
     sideOffset?: DropdownMenuContentProps["sideOffset"];
     id: string;
     title: string;
+    renameAllowed?: boolean;
 }
 
 export const Actions = ({
@@ -33,6 +33,7 @@ export const Actions = ({
     sideOffset,
     id,
     title,
+    renameAllowed = true,
 }: ActionsProps) => {
     const { onOpen } = useRenameModal();
     const { mutate, pending } = useApiMutation(api.board.remove);
@@ -69,13 +70,15 @@ export const Actions = ({
                     <Link2 className="h-4 w-4 mr-2" />
                     Copy board link
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => onOpen(id, title)}
-                    className="p-3 cursor-pointer"
-                >
-                    <Pencil className="h-4 w-4 mr-2" />
-                    Rename
-                </DropdownMenuItem>
+                {renameAllowed && (
+                    <DropdownMenuItem
+                        onClick={() => onOpen(id, title)}
+                        className="p-3 cursor-pointer"
+                    >
+                        <Pencil className="h-4 w-4 mr-2" />
+                        Rename
+                    </DropdownMenuItem>
+                )}
                 <ConfirmModal
                     disabled={pending}
                     onConfirm={onDelete}
